@@ -18,7 +18,9 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        return view('document.index');
+        $document = Document::all();
+        // dd($document);
+    return view('document.index', compact('document'));
     }
 
     /**
@@ -36,14 +38,21 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
+        // $request->validate([
+        //     'title' => 'required|string|max:255',
+        //     'file_path' => 'required|mimes:pdf|max:500', // Adjust file size as needed
+        //     'category_id' => 'nullable|exists:categories,id',
+        //     'tags' => 'nullable|json',
+        // ]);
         // Validate the request and handle file upload
-        $path = $request->file('pdf_file')->store('pdf_files');
+        $title = $request->input('title');
 
+        $path = $request->file('pdf_file')->storeAs('pdf_files', $title . '.pdf');
         // Create or find the category
         $category = Category::firstOrCreate(['name' => $request->input('tags')]);
 
         // Create a new document record
-        // dd(json_decode($request->input('tags')));
+        // dd($request);
         Document::create([
             'user_id' => Auth::user()->id,
             'title' => $request->input('title'),
@@ -58,9 +67,10 @@ class DocumentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Document $document)
+    public function show($id)
     {
-        //
+        $document = Document::findOrFail($id);
+        return view('document.show', compact('document'));
     }
 
     /**
@@ -68,7 +78,7 @@ class DocumentController extends Controller
      */
     public function edit(Document $document)
     {
-        //
+        return view('document.edit', compact('document'));
     }
 
     /**

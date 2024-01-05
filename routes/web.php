@@ -30,9 +30,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/document', [DocumentController::class, 'index'])->name('document.index');
-    Route::get('/document/create', [DocumentController::class, 'create'])->name('document.create');
-    Route::post('/document', [DocumentController::class, 'store'])->name('document.store');
+    Route::resource('document', DocumentController::class);
+    // Route::get('/document', [DocumentController::class, 'index'])->name('document.index');
+    // Route::get('/document/create', [DocumentController::class, 'create'])->name('document.create');
+    // Route::post('/document', [DocumentController::class, 'store'])->name('document.store');
+    // Route::get('/document/{id}', [DocumentController::class, 'show'])->name('document.show');
+    // Route::get('/document/{id}/edit', [DocumentController::class, 'edit'])->name('document.edit');
+    // Route::delete('/document/{id}', [DocumentController::class, 'destroy'])->name('document.destroy');
 });
 
 Route::middleware('admin', 'verified')->group(function(){
