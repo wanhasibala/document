@@ -2,16 +2,23 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Document extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
     
-    protected $fillable =['title', 'file_path'];
-    
-    public function metadata(){
-        return $this->hasOne(Metadata::class);
+    protected $fillable =['user_id','title', 'file_path', 'tags', 'category_id' ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }    
 }

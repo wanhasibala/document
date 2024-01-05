@@ -12,7 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('documents', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->foreignId('user_id')->constrained();
+            $table->string('title');
+            $table->string('file_path');
+            $table->foreignId('category_id')->references('id')->on('categories');
+            $table->boolean('is_published');
+            $table->json('tags')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
