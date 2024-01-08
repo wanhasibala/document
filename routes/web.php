@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DocumentController;
 use App\Models\Document;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,8 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $documents = Document::all();
+    $user = Auth::user();
+    $documents = $user->documents()->orderBy("created_at", 'desc')->limit(1)->get();
     return view('dashboard', compact('documents'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 

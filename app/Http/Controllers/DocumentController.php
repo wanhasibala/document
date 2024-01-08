@@ -9,18 +9,27 @@ use App\Models\Document;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Metadata;
+use App\Models\Tags;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class DocumentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $document = Document::all();
-        // dd($document);
-    return view('document.index', compact('document'));
+        $user = Auth::user();
+        $sortBy = $request->input('sort_by', 'created_at');
+        $sortOrder = $request->input('sort_order', 'desc');
+
+        // Load the user's documents with relationships (e.g., tags, category) and apply sorting
+        $document = $user->documents()
+            // ->with('tags', 'category')
+            ->orderBy($sortBy, $sortOrder)
+            ->get();
+        return view('document.index', compact('document', 'sortBy', 'sortOrder'));
     }
 
     /**
@@ -28,9 +37,28 @@ class DocumentController extends Controller
      */
     public function create()
     {
+        // $existingTags = Tag::pluck('name')->toArray();
         $userId = Auth::id();
         $categories = Category::all();
-        return view('document.create', compact('categories'));
+        $tags = Tags::pluck('name')->toArray();
+        return view('document.create', compact('categories'), compact('tags'));
+    }
+
+    protected function syncTags($tags)
+    {
+        $tagNames = json_decode($tags, true);
+
+        // Sync tags with the tags table
+        Tags::whereIn('name', $tagNames)->get()->each(function ($tag) use ($tagNames) {
+            $key = array_search($tag->name, $tagNames);
+            if ($key !== false) {
+                unset($tagNames[$key]);
+            }
+        });
+
+        foreach ($tagNames as $tagName) {
+            Tags::create(['name' => $tagName]);
+        }
     }
 
     /**
@@ -47,9 +75,10 @@ class DocumentController extends Controller
         // Validate the request and handle file upload
         $title = $request->input('title');
 
-        $path = $request->file('pdf_file')->storeAs('pdf_files', $title . '.pdf');
+        $path = $request->file('pdf_file')->storeAs('pdf_files', Str::random(10) . '.pdf');
         // Create or find the category
-        $category = Category::firstOrCreate(['name' => $request->input('tags')]);
+        $category = Category::firstOrCreate(['name' => $request->input('category')]);
+        $tags = json_encode($request->input('tags'));
 
         // Create a new document record
         // dd($request);
@@ -58,8 +87,9 @@ class DocumentController extends Controller
             'title' => $request->input('title'),
             'file_path' => $path,
             'category_id' => $category->id,
-            'tags' => json_decode($request->input('tags')),
+            'tags' => $tags, // Assumes 'tags' is an array,
         ]);
+        $this->syncTags($tags);
 
         return redirect()->back();
     }
@@ -84,7 +114,7 @@ class DocumentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDocumentRequest $request, Document $document)
+    public function update(Request $request, Document $document)
     {
         //
     }

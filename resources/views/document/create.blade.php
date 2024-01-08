@@ -1,39 +1,62 @@
 <x-app-layout>
-    <div class="container m-8 bg-slate-800 p-2 rounded-md">
+    <div class="container m-8 min-w-48 bg-slate-800 p-2 rounded-md">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
+                <div class="card p-4">
                     <div class="card-header text-gray-100 text-xl mb-4 font-semibold">{{ __('Create Document') }}</div>
 
-                    <div class="card-body">
+                    <div class="card-body gap-4">
                         <form method="POST" action="{{ route('document.store') }}" enctype="multipart/form-data">
                             @csrf
 
-                            <div class="form-group">
-                                <label for="title" class="text-gray-200">{{ __('Title') }}</label>
-                                <input type="text" name="title" id="title" class="form-control" required>
+                            <div class="form-group  gap-2 mb-4">
+                                <label for="title" class="text-gray-200 ">{{ __('Title') }}</label>
+                                <input type="text" name="title" id="title" class="form-control w-full rounded-md mt-1"
+                                    required>
                             </div>
 
-                            <div class="form-group text-gray-200">
+                            <div class="form-group text-gray-200 mb-4">
                                 <label for="pdf_file">{{ __('PDF File') }}</label>
-                                <input type="file" name="pdf_file" id="pdf_file" class="form-control-file" required>
+                                <input type="file" name="pdf_file" id="pdf_file"
+                                    class="form-control-file w-full rounded-md mt-1" required>
+                            </div>
+                            <div class="form-group gap-2 mb-4  ">
+                                <label for="category" class="text-gray-200 mr-4 mb-2">{{ __('Category') }}</label>
+                                <select name="category" id="category" class="w-full rounded-md" multiple="multiple">
+                                    @foreach($categories as $category)
+                                    <option value="category_id">{{$category->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
-                            <div class="form-group ">
-                                <label for="category" class="text-gray-200 mr-4">{{ __('Category') }}</label>
-                                <input type="text" name="category" id="category" class="form-control">
+                            <label for="tags" class="text-gray-200 mb-2">Tags</label>
+                            <div class="form-group  w-full mb-4" multipl="multiple">
+                                <input id="tags" name="tags[]" class="form-control w-full" multiple="multiple">
+                                @foreach($tags as $tag)
+                                {{ $tag }}
+                                @endforeach
+                                </input>
                             </div>
+                            {{-- <select>
+                                @foreach($tags as $tag)
+                                {{$tag}}
+                                <option value="{{$tag}}" selected hidden> {{$tag}}</option>
+                                @endforeach
 
-                            <div class="form-group mb-4">
-                                <label for="tags" class="text-gray-200 mr-4">{{ __('Tags (JSON)') }}</label>
-                                <textarea name="tags" id="tags" class="form-control" rows="3" required></textarea>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary px-4 py-1 rounded-full bg-slate-700 text-gray-200">{{ __('Create Document') }}</button>
+                            </select> --}}
+                            <button type="submit"
+                                class="btn btn-primary px-4 py-1 rounded-full bg-slate-700 text-gray-200">{{ __('Create
+                                Document') }}</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @push('script')
+
+    <script>
+        $('#tags').select2();
+    </script>
+    @endpush
 </x-app-layout>
