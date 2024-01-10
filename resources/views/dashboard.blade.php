@@ -31,6 +31,7 @@
             <div class="flex space-x-4">
                 <a href="{{ route('document.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Create Document</a>
                 <a href="{{ route('document.index') }}" class="bg-green-500 text-white px-4 py-2 rounded">View All Documents</a>
+                <a href="{{ route('document.trash') }}" class="bg-red-500 text-white px-4 py-2 rounded">Trash  </a>
             </div>
         </div>
     </div>

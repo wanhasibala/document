@@ -7,6 +7,8 @@ use App\Http\Controllers\DocumentController;
 use App\Models\Document;
 use Illuminate\Support\Facades\Auth;
 
+use function Laravel\Prompts\search;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,8 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('document', DocumentController::class);
-    // Route::get('/document', [DocumentController::class, 'index'])->name('document.index');
-    // Route::get('/document/create', [DocumentController::class, 'create'])->name('document.create');
+    Route::get('/dashboard/trash', [DocumentController::class, 'trash'])->name('document.trash');
+    Route::put('/document/restore/{id}', [DocumentController::class, 'restore'])->name('document.restore');
+    Route::post('/document/search', [DocumentController::class, 'search'])->name('document.search');
+    Route::delete('/document/{id}/permanentdelete',[DocumentController::class, 'permanentDelete'])->name('document.permanentDelete');
     // Route::post('/document', [DocumentController::class, 'store'])->name('document.store');
     // Route::get('/document/{id}', [DocumentController::class, 'show'])->name('document.show');
     // Route::get('/document/{id}/edit', [DocumentController::class, 'edit'])->name('document.edit');
@@ -43,6 +47,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('admin', 'verified')->group(function(){
     Route::get('/dashboard/admin', [AdminController::class,'index'])->name('admin.index');
+    Route::get('/dashboard/admin/users', [AdminController::class, 'user'])->name('admin.users');
     Route::get('/dashboard/admin/create', [AdminController::class, 'create'])->name('admin.create');
     Route::get('/dashboard/admin/{user}/edit', [AdminController::class, 'edit'])->name('admin.edit');
     Route::delete('/dashboard/admin/{user}', [AdminController::class, 'destroy'])->name('admin.destroy');

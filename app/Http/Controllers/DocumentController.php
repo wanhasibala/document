@@ -20,16 +20,26 @@ class DocumentController extends Controller
      */
     public function index(Request $request)
     {
+        // dd(request('search'));
         $user = Auth::user();
         $sortBy = $request->input('sort_by', 'created_at');
         $sortOrder = $request->input('sort_order', 'desc');
-
+        $search = $request->input('search');
+        $filter = $request->input('filter');
+        $categories = Category::all();
+        // dd($sortOrder);
         // Load the user's documents with relationships (e.g., tags, category) and apply sorting
         $document = $user->documents()
             // ->with('tags', 'category')
-            ->orderBy($sortBy, $sortOrder)
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', '%' . $search . '%');
+            })
+            ->when($filter, function ($query) use ($filter) {
+                $query->where('category_id', $filter);
+            })
+            ->orderBy($request->input('sort_by', 'created_at'), $request->input('sort_order', 'desc'))
             ->get();
-        return view('document.index', compact('document', 'sortBy', 'sortOrder'));
+        return view('document.index', compact('document',  'search', 'categories', 'filter'));
     }
 
     /**
@@ -124,6 +134,27 @@ class DocumentController extends Controller
      */
     public function destroy(Document $document)
     {
-        //
+        $document->delete();
+        return redirect('/document')->with('status', 'Document finally deleted');
+    }
+    public function trash(Document $document)
+    {
+        // $document = Auth::user()->documents();
+        $trash = $document::onlyTrashed()->get();
+        return view('document.trash', compact('trash'));
+    }
+    public function restore($id)
+    {
+        $user = Auth::user();
+        $document = $user->documents()->onlyTrashed()->findOrFail($id);
+        $document->restore();
+        return redirect()->route('document.trash')->with('succes', 'succesfully restored');
+    }
+    public function permanentDelete($id)
+    {
+        $user = Auth::user();
+        $document = $user->documents()->onlyTrashed()->findOrFail($id);
+        $document->forceDelete();
+        return redirect()->route('document.trash')->with('succes', 'succesfully restored');
     }
 }

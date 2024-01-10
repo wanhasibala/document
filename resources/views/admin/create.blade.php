@@ -2,7 +2,7 @@
     <div class="bg-gray-200 min-h-screen flex ">
         <div class="bg-white p-8 rounded shadow-md w-full m-8  ">
             <div class="flex flex-row items-center justify-between mb-6">
-                <h1 class="text-2xl font-semibold ">Creta New User</h1>
+                <h1 class="text-2xl font-semibold ">Create New User</h1>
                 <a class="text-sm py-2 px-4 bg-black text-white rounded-2xl" href="/dashboard/admin">Create</a>
             </div>
             <form action="{{ route('admin.store') }}" method="post">

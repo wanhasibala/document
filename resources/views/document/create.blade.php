@@ -28,12 +28,12 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div>
 
-                            <label for="tags" class="text-gray-200 mb-2">Tags</label>
-                            <div class="form-group  w-full mb-4" multipl="multiple">
-                                <input id="tags" name="tags[]" class="form-control w-full" multiple="multiple">
+                                <label for="tags" class="text-gray-200 mb-2">Tags</label>
+                                <input id="tags" name="tags[]" class=" tags form-control w-full" multiple="multiple">
                                 @foreach($tags as $tag)
-                                {{ $tag }}
+                                <option value="{{$tag}}">{{$tag}}</option>
                                 @endforeach
                                 </input>
                             </div>
@@ -56,7 +56,15 @@
     @push('script')
 
     <script>
-        $('#tags').select2();
+        $(document).ready(function() {
+            // Select2 Multiple
+            $('.tags').select2({
+                placeholder: "Select",
+                allowClear: true
+            });
+
+        });
+
     </script>
     @endpush
 </x-app-layout>
