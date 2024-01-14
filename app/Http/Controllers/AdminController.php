@@ -61,7 +61,7 @@ class AdminController extends Controller
         //
     }
 
-    /**
+/**
      * Display the specified resource.
      */
     public function show(Admin $admin)

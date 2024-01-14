@@ -1,12 +1,10 @@
 <x-app-layout>
-    <div class="container mx-auto p-4 text-gray-200 min-w-48">
+    <div class="container mx-auto p-4 text-gray-200 ">
         <div class="flex flex-row justify-between items-center mb-4">
             <h1 class="text-2xl font-semibold mb-4">Document List</h1>
             <div class="flex flex-row gap-4 items-center  ">
                 <form action="/document">
                     <div class="flex flex-row gap-2">
-
-                        
                         <div class="form-group ">
                             <select class="form-control bg-gray-700 rounded-full  " id="filter" name="filter">
                                 <option value={{ $filter ? '' : 'selected' }}>All Categories</option>
@@ -71,13 +69,20 @@
                     {{$document->category->name}}
                 </div>
             </div>
-            <div>
-                <a href="{{ route('document.show', $document) }}" class="text-blue-500 hover:underline">View</a>
-                <a href="{{ route('document.edit', $document) }}" class="text-yellow-500 hover:underline">Edit</a>
+            <div class="flex flex-row gap-2">
+                <a href="{{ route('document.show', $document) }}" class="text-blue-500 hover:underline">
+                    <x-heroicon-o-eye width=20 />
+                </a>
+                <a href="{{ route('document.edit', $document) }}" class="text-yellow-500 hover:underline">
+                    <x-heroicon-o-pencil width=20 />
+                </a>
                 <form class="inline" action="{{ route('document.destroy', $document) }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                    <button type="submit">
+
+                        <x-heroicon-o-trash width=20 color=red />
+                    </button>
                 </form>
             </div>
         </div>

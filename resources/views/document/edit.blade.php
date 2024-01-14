@@ -6,28 +6,46 @@
             @csrf
             @method('put')
 
-            <div class="form-group">
-                <label for="title" class="text-gray-200">{{ __('Title') }}</label>
-                <input type="text" name="title" id="title" class="form-control" required value="{{$document->title}}">
+            <div class="form-group  gap-2 mb-4">
+                <label for="title" class="text-gray-200 ">{{ __('Title') }}</label>
+                <input type="text" name="title" id="title" class="form-control w-full rounded-md mt-1"
+                    value="{{$document->title}}">
             </div>
 
-            <div class="form-group text-gray-200">
+            <div class="form-group text-gray-200 mb-4">
                 <label for="pdf_file">{{ __('PDF File') }}</label>
-                <input type="file" name="pdf_file" id="pdf_file" class="form-control-file" required value="{{$document->file_path}}">
+                <input type="file" name="pdf_file" id="pdf_file"
+                    class="form-control-file w-full rounded-md mt-1" required>
             </div>
-
-            <div class="form-group ">
-                <label for="category" class="text-gray-200 mr-4">{{ __('Category') }}</label>
-                <input type="text" name="category" id="category" class="form-control" value="{{$document->category_id}}">
+            <div class="form-group gap-2 mb-4">
+                <label for="category" class="text-gray-200 mr-4 mb-2">{{ __('Category') }}</label>
+                <select name="category" id="category" class="w-full rounded-md form-control" >
+                    <option value="{{$document->categories }}"> choose categories </option>
+                    @foreach($categories as $category)
+                    <option value="{{$category->id}}">{{$category->name}}</option>
+                    @endforeach
+                </select>
             </div>
-
-            <div class="form-group mb-4">
-                <label for="tags" class="text-gray-200 mr-4">{{ __('Tags (JSON)') }}</label>
-                <textarea name="tags" id="tags" class="form-control" rows="3" required></textarea>
+            <div>
+                <label for="tags" class="text-gray-200 mb-2">Tags</label>
+                <select id="tags" name="tags[]" class=" tags form-control w-full"  >
+                    <option value="{{$document->tags}}"
+                @foreach($tags as $tag)
+                <option value="{{$tag->name}}">{{$tag->name}}</option>
+                @endforeach
+                </select>
             </div>
+            
+            {{-- <select>
+                @foreach( $tags as $tag)
+                {{$tag}}
+                <option value="{{$tag}}" selected hidden> {{$tag}}</option>
+                @endforeach
 
-            <button type="submit" class="btn btn-primary px-4 py-1 rounded-full bg-slate-700 text-gray-200">{{
-                __('Create Document') }}</button>
+            </select> --}}
+            <button type="submit"
+                class="btn btn-primary px-4 py-1 rounded-full bg-slate-700 text-gray-200 mt-4">{{ __('Create
+                Document') }}</button>
         </form>
 
 </x-app-layout>

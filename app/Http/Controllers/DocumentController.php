@@ -88,7 +88,7 @@ class DocumentController extends Controller
         $path = $request->file('pdf_file')->storeAs('pdf_files', Str::random(10) . '.pdf');
         // Create or find the category
         $category = Category::firstOrCreate(['name' => $request->input('category')]);
-        $tags = json_encode($request->input('tags'));
+        $tags = ($request->input('tags'));
 
         // Create a new document record
         // dd($request);
@@ -110,7 +110,8 @@ class DocumentController extends Controller
     public function show($id)
     {
         $document = Document::findOrFail($id);
-        return view('document.show', compact('document'));
+        $audit = $document->audits;
+        return view('document.show', compact('document', 'audit' ));
     }
 
     /**
@@ -118,8 +119,10 @@ class DocumentController extends Controller
      */
     public function edit(Document $document)
     {
-        return view('document.edit', compact('document'));
-    }
+        $categories = Category::all();
+        $tags = Tags::all();
+        return view('document.edit', compact('document', 'categories', 'tags'));
+        }
 
     /**
      * Update the specified resource in storage.

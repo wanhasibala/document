@@ -3,7 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DocumentController;
+use App\Models\Category;
 use App\Models\Document;
 use Illuminate\Support\Facades\Auth;
 
@@ -53,6 +55,10 @@ Route::middleware('admin', 'verified')->group(function(){
     Route::delete('/dashboard/admin/{user}', [AdminController::class, 'destroy'])->name('admin.destroy');
     Route::post('/dashboard/admin', [AdminController::class, 'store'])->name('admin.store');
     Route::put('/admin/users/{user}', [AdminController::class, 'update'])->name('admin.update');
+    Route::post('/dashboard/admin', [CategoryController::class, 'store'])->name('category.store');
+    Route::delete('/dashboard/admin/category/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
+    Route::get('/dashboard/admin/edit/{category}', [CategoryController::class, 'edit'])->name('category.edit');
+    Route::put('/dashboard/admin/{category}/edit', [CategoryController::class, 'update'])->name('category.update');
 });
 
 require __DIR__.'/auth.php';
