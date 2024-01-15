@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Models\Audit;
 
 class User extends Authenticatable 
 {
@@ -48,5 +48,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Document::class);
     }
-
+   public function audits()
+    {
+        $audit = Audit::with('user')->get();
+        return $this->hasMany(Audit::class);
+    }
 }

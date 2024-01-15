@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignId('user_id')->constrained();
             $table->string('title');
-            $table->string('file_path');
+            $table->string('file_path')->nullable();
             $table->foreignId('category_id')->references('id')->on('categories');
             $table->boolean('is_published');
             $table->json('tags')->nullable();

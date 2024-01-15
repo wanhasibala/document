@@ -3,7 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Document;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,5 +22,14 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        // Document::factory(10)->create([
+        //     'id' => Str::uuid(),
+        //     'title' => Str::random(12),
+        //     'file_path' => null, // You can replace null with the actual file path
+        //     'category_id' =>  1,
+        //     'tags' => null, // Replace with your desired tags
+        // ]);
     }
+    
 }
+

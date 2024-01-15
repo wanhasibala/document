@@ -7,15 +7,15 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         request()->validate([
-            'name'=> ['required','string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
         ]);
         $category = Category::create([
-            'name' =>request('name')
+            'name' => request('name')
         ]);
         return redirect()->route('admin.index')->with('success', 'Category created successfully');
-
     }
     public function destroy(Category $category)
     {

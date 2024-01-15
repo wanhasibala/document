@@ -14,7 +14,6 @@ class Document extends Model implements Auditable
 
     protected $fillable = ['user_id', 'title', 'file_path', 'tags', 'category_id'];
     protected $dates = ['deleted_at'];
-    protected $casting = ['old_values' => 'json', 'new_values' => 'json', 'auditable_id' => 'integer'];
 
     public function user()
     {

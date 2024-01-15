@@ -34,21 +34,6 @@
         <div class="mt-10">
             Document History
         </div>
-        @forelse($audit as $audit)
-
-        {{-- {{$modified->}} --}}
-        {{-- {{$audit->created_at}} --}}
-        {{-- @lang('document.' .$audit->event. '.modified.'.$attribute, $modified) --}}
-        <div class="flex gap-10">
-            {{-- {{$attribute}} --}}
-            <div>{{$audit->created_at->diffForHumans()}}</div>
-            <div>{{$audit->event}}</div>
-            {{-- @foreach($audit->with('old_values') as $values ) --}}
-            {{-- <div>{{$values->}}</div> --}}
-            {{-- @endforeach --}}
-        </div>
-        @empty
-        @endforelse
     </div>
 
 </x-app-layout>

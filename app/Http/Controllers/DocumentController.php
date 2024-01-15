@@ -54,23 +54,6 @@ class DocumentController extends Controller
         return view('document.create', compact('categories'), compact('tags'));
     }
 
-    protected function syncTags($tags)
-    {
-        $tagNames = json_decode($tags, true);
-
-        // Sync tags with the tags table
-        Tags::whereIn('name', $tagNames)->get()->each(function ($tag) use ($tagNames) {
-            $key = array_search($tag->name, $tagNames);
-            if ($key !== false) {
-                unset($tagNames[$key]);
-            }
-        });
-
-        foreach ($tagNames as $tagName) {
-            Tags::create(['name' => $tagName]);
-        }
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -97,9 +80,8 @@ class DocumentController extends Controller
             'title' => $request->input('title'),
             'file_path' => $path,
             'category_id' => $category->id,
-            'tags' => $tags, // Assumes 'tags' is an array,
+            // 'tags' => $tags, // Assumes 'tags' is an array,
         ]);
-        $this->syncTags($tags);
 
         return redirect()->back();
     }
@@ -110,8 +92,7 @@ class DocumentController extends Controller
     public function show($id)
     {
         $document = Document::findOrFail($id);
-        $audit = $document->audits;
-        return view('document.show', compact('document', 'audit' ));
+        return view('document.show', compact('document'  ));
     }
 
     /**

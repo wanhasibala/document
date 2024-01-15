@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Admin;
 use App\Models\Category;
+use App\Models\Document;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,9 +20,11 @@ class AdminController extends Controller
     public function index()
     {
         $this->authorize('admin');
-        $users = User::paginate(10);   
+        $users = User::paginate(5);   
         $categories = Category::all();
-        return view('admin.index', compact('users', 'categories') );
+        $document = Document::first();
+        $audits = $document->audits()->with('user')->get();
+        return view('admin.index', compact('users', 'categories', 'audits') );
     }
 
     public function user(){

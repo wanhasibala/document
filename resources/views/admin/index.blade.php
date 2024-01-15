@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="min-h-screen text-gray-200 flex flex-col m-8 md:flex-row gap-10">
+    <div class=" bg-gray-900 text-gray-200 flex flex-col m-8 md:flex-row gap-10">
         <div class="  rounded md:w-[50vw] min-w-[500px] ">
             <div class="text-lg font-semibold flex justify-between items-baseline">
                 User list
@@ -18,7 +18,7 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody class="text-sm">
+                    <tbody class="text-sm ">
                         @foreach ($users as $user)
                         <tr>
                             <td class="p-2 ">{{ $user->name }}</td>
@@ -62,10 +62,10 @@
             <form action="{{route('category.store')}}" method="post" class="flex gap-4 my-4 justify-start">
                 @csrf
                 <input type="text" name="name" id="name" class="bg-gray-700 w-[30vw] h-8 rounded-md ">
-                <button type="submit" class="rounded-full border-[.5px] border-gray-700 px-2 " >create</button>
+                <button type="submit" class="rounded-full border-[.5px] border-gray-700 px-2 ">create</button>
             </form>
             @foreach($categories as $category)
-           
+
             <div class="flex justify-between ">
                 <p>{{$category->name}}</p>
 
@@ -83,4 +83,35 @@
             @endif
         </div>
     </div>
+    <div class="m-8 text-gray-200">
+        <div class="text-xl font-semibold">
+
+            Audit
+        </div>
+        <div class="  mt-4 rounded-lg border overflow-hidden max-w-[800px]">
+            <table class="table mt- w-full rounded-lg">
+                <thead class="border bg-gray-700 border-gray-600">
+                    <tr>
+                        <th class="w-[200px]">Date</th>
+                        <th>Action</th>
+                        <th class="w-[200px]">User</th>
+                        <th>Model</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($audits as $audit )
+                    <tr>
+                        <td>{{$audit->created_at}}</td>
+                        <td>{{$audit->event}}</td>
+                        <td class="flex justify-center"> {{ optional($audit->user)->name }}</td>
+                        <td>
+                            {{$audit->auditable_type}}
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </x-app-layout>
