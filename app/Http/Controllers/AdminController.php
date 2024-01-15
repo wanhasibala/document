@@ -11,6 +11,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use OwenIt\Auditing\Contracts\Audit;
+use OwenIt\Auditing\Models\Audit as ModelsAudit;
 
 class AdminController extends Controller
 {
@@ -20,14 +22,15 @@ class AdminController extends Controller
     public function index()
     {
         $this->authorize('admin');
-        $users = User::paginate(5);   
+        $users = User::paginate(5);
         $categories = Category::all();
         $document = Document::first();
-        $audits = $document->audits()->with('user')->get();
-        return view('admin.index', compact('users', 'categories', 'audits') );
+        $audits = ModelsAudit::with('user')->get();
+        return view('admin.index', compact('users', 'categories', 'audits'));
     }
 
-    public function user(){
+    public function user()
+    {
         $users = User::all();
         return view('admin.user', compact('users'));
     }
@@ -64,7 +67,7 @@ class AdminController extends Controller
         //
     }
 
-/**
+    /**
      * Display the specified resource.
      */
     public function show(Admin $admin)
@@ -104,6 +107,6 @@ class AdminController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('admin.index')->with('success', 'User deleted successfully.'); 
+        return redirect()->route('admin.index')->with('success', 'User deleted successfully.');
     }
 }

@@ -50,7 +50,6 @@ class User extends Authenticatable
     }
    public function audits()
     {
-        $audit = Audit::with('user')->get();
         return $this->hasMany(Audit::class);
     }
 }

@@ -106,7 +106,7 @@
                         <td class="flex justify-center"> {{ optional($audit->user)->name }}</td>
                         <td>
                             {{$audit->auditable_type}}
-                        </td>
+                        </td>   
                     </tr>
                     @endforeach
                 </tbody>

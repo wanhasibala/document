@@ -67,7 +67,6 @@ class DocumentController extends Controller
         // ]);
         // Validate the request and handle file upload
         $title = $request->input('title');
-
         $path = $request->file('pdf_file')->storeAs('pdf_files', Str::random(10) . '.pdf');
         // Create or find the category
         $category = Category::firstOrCreate(['name' => $request->input('category')]);
