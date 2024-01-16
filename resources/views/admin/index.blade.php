@@ -4,7 +4,10 @@
         <div class="  rounded md:w-[50vw] min-w-[500px] ">
             <div class="text-lg font-semibold flex justify-between items-baseline">
                 User list
-                {{-- <a href="{{route('admin.users')}}" class="font-light text-sm ">view all</a> --}}
+                <a href="{{route('admin.users')}}" class="font-light text-sm ">view all</a>
+            </div>
+            <div class="flex my-4">
+                <a href="{{route('userexport')}}" class="bg-green-700 px-4 py-1 rounded-full text-sm"> export users</a>
             </div>
             <!-- Admin-specific content goes here -->
             <div class="  mt-4 rounded-lg border border-gray-600">
@@ -106,7 +109,7 @@
                         <td class="flex justify-center"> {{ optional($audit->user)->name }}</td>
                         <td>
                             {{$audit->auditable_type}}
-                        </td>   
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

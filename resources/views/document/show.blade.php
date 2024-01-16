@@ -29,15 +29,17 @@
         </div>
         {{-- @foreach ($document->tags_id as $tags) --}}
             
-        <div class="flex text-sm">
+        <div class="flex text-sm ">
             <div class="mt-4 px-2 bg-gray-700 rounded-full">
                 {{$document->tags_id}}
             </div>
         </div>
         {{-- @endforeach --}}
 @foreach($tags as $tag)
-    
-{{$tag}}
+    <div class="flex flex-col">
+
+        {{$tag}}
+    </div>
 @endforeach
 
     </div>

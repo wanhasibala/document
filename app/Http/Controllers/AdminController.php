@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UserExport;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
+use App\Imports\UserImport;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Document;
@@ -11,6 +13,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use OwenIt\Auditing\Contracts\Audit;
 use OwenIt\Auditing\Models\Audit as ModelsAudit;
 
@@ -33,6 +36,20 @@ class AdminController extends Controller
     {
         $users = User::all();
         return view('admin.user', compact('users'));
+    }
+    public function userexport(){
+        return Excel::download(new UserExport, 'user.xlsx');
+    }
+    public function userimport(Request $request){
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+    
+        $file = $request->file('file');
+    
+        Excel::import(new UserImport, $file);
+    
+        return redirect()->back()->with('success', 'Data imported successfully.');
     }
     /**
      * Show the form for creating a new resource.

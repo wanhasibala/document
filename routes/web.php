@@ -60,6 +60,9 @@ Route::middleware('admin', 'verified')->group(function(){
     Route::delete('/dashboard/admin/category/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
     Route::get('/dashboard/admin/edit/{category}', [CategoryController::class, 'edit'])->name('category.edit');
     Route::put('/dashboard/admin/{category}/edit', [CategoryController::class, 'update'])->name('category.update');
+    Route::get('/userexport', [AdminController::class, 'userexport'])->name('userexport');
+    Route::post('/userimport', [AdminController::class, 'userimport'])->name('userimport');
+
 });
 
 require __DIR__.'/auth.php';
