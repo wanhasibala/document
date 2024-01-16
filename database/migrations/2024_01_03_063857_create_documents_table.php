@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('file_path')->nullable();
             $table->foreignId('category_id')->references('id')->on('categories');
             $table->boolean('is_published');
-            $table->json('tags')->nullable();
+            $table->string('tags_id');
             $table->softDeletes();
             $table->timestamps();
         });

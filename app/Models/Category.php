@@ -14,6 +14,9 @@ class Category extends Model implements Auditable
     protected $fillable = ['name'];
 
     public function documents(){
-        return $this->hasMany(Document::class);
+        return $this->belongsTo(Document::class);
+    }
+    public function tags(){
+        return $this->hasMany(Tags::class);
     }
 }

@@ -12,6 +12,6 @@ class Tags extends Model
     protected $fillable = ['name'];
 
     public function documents(){
-        return $this->hasMany(Document::class);
+        return $this->belongsTo(Document::class);
     }
 }

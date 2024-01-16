@@ -12,7 +12,7 @@ class Document extends Model implements Auditable
 {
     use HasFactory, HasUuids, SoftDeletes, \OwenIt\Auditing\Auditable;
 
-    protected $fillable = ['user_id', 'title', 'file_path', 'tags', 'category_id'];
+    protected $fillable = ['user_id', 'title', 'file_path', 'tags_id', 'category_id'];
     protected $dates = ['deleted_at'];
 
     public function user()
@@ -27,6 +27,6 @@ class Document extends Model implements Auditable
 
     public function tags()
     {
-        return $this->hasMany(Tags::class);
+        return $this->belongsToMany(Tags::class);
     }
 }

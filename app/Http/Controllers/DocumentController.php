@@ -50,8 +50,8 @@ class DocumentController extends Controller
         // $existingTags = Tag::pluck('name')->toArray();
         $userId = Auth::id();
         $categories = Category::all();
-        $tags = Tags::pluck('name')->toArray();
-        return view('document.create', compact('categories'), compact('tags'));
+        $tags = Tags::all();
+        return view('document.create', compact('categories', 'tags') );
     }
 
     /**
@@ -59,27 +59,21 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'title' => 'required|string|max:255',
-        //     'file_path' => 'required|mimes:pdf|max:500', // Adjust file size as needed
-        //     'category_id' => 'nullable|exists:categories,id',
-        //     'tags' => 'nullable|json',
-        // ]);
-        // Validate the request and handle file upload
+       
         $title = $request->input('title');
         $path = $request->file('pdf_file')->storeAs('pdf_files', Str::random(10) . '.pdf');
         // Create or find the category
-        $category = Category::firstOrCreate(['name' => $request->input('category')]);
-        $tags = ($request->input('tags'));
-
+        $category = Category::firstOrCreate(['id' => $request->input('category')]);
+        $tags = json_encode($request->tags);
         // Create a new document record
-        // dd($request);
+        
+        // dd($tags);
         Document::create([
             'user_id' => Auth::user()->id,
             'title' => $request->input('title'),
             'file_path' => $path,
-            'category_id' => $category->id,
-            // 'tags' => $tags, // Assumes 'tags' is an array,
+            'category_id' => $category,
+            'tags_id' => $tags, // Assumes 'tags' is an array,
         ]);
 
         return redirect()->back();
@@ -91,7 +85,8 @@ class DocumentController extends Controller
     public function show($id)
     {
         $document = Document::findOrFail($id);
-        return view('document.show', compact('document'  ));
+        $tags = json_decode($document->tags_id);
+        return view('document.show', compact('document', 'tags'));
     }
 
     /**
@@ -139,5 +134,13 @@ class DocumentController extends Controller
         $document = $user->documents()->onlyTrashed()->findOrFail($id);
         $document->forceDelete();
         return redirect()->route('document.trash')->with('succes', 'succesfully restored');
+    }
+    public function getTags(Request $request){
+        $tags = [];
+        if($search = $request->name){
+            $tags = Tags::where('title', 'LIKE', "%$search%")->get();
+        }   
+        return response()->json($tags); 
+        dd($tags);
     }
 }

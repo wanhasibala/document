@@ -25,15 +25,21 @@
         {{-- Document content --}}
         <div class="  bg-gray-700 mt-4 p-2 h-[200px] flex justify-center items-center rounded-md">
             {{$document->file_path}}
+
         </div>
+        {{-- @foreach ($document->tags_id as $tags) --}}
+            
         <div class="flex text-sm">
             <div class="mt-4 px-2 bg-gray-700 rounded-full">
-                {{$document->tags}}
+                {{$document->tags_id}}
             </div>
         </div>
-        <div class="mt-10">
-            Document History
-        </div>
+        {{-- @endforeach --}}
+@foreach($tags as $tag)
+    
+{{$tag}}
+@endforeach
+
     </div>
 
 </x-app-layout>

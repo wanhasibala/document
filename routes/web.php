@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/document/restore/{id}', [DocumentController::class, 'restore'])->name('document.restore');
     Route::post('/document/search', [DocumentController::class, 'search'])->name('document.search');
     Route::delete('/document/{id}/permanentdelete',[DocumentController::class, 'permanentDelete'])->name('document.permanentDelete');
+    Route::post('tags', [DocumentController::class, 'getTags'])->name('get-tags');
     // Route::post('/document', [DocumentController::class, 'store'])->name('document.store');
     // Route::get('/document/{id}', [DocumentController::class, 'show'])->name('document.show');
     // Route::get('/document/{id}/edit', [DocumentController::class, 'edit'])->name('document.edit');
